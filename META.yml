@@ -24,10 +24,10 @@ requires:
   strict: 0
   warnings: 0
 resources:
-  bugtracker: https://github.com/doy/reply/issues
+  bugtracker: https://github.com/doy/spreadsheet-parsexlsx/issues
   homepage: http://metacpan.org/release/Spreadsheet-ParseXLSX
   repository: git://github.com/doy/spreadsheet-parsexlsx.git
-version: 0.01
+version: 0.02
 x_Dist_Zilla:
   perl:
     version: 5.018000

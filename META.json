@@ -48,7 +48,7 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/doy/reply/issues"
+         "web" : "https://github.com/doy/spreadsheet-parsexlsx/issues"
       },
       "homepage" : "http://metacpan.org/release/Spreadsheet-ParseXLSX",
       "repository" : {
@@ -57,7 +57,7 @@
          "web" : "https://github.com/doy/spreadsheet-parsexlsx"
       }
    },
-   "version" : "0.01",
+   "version" : "0.02",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.018000"

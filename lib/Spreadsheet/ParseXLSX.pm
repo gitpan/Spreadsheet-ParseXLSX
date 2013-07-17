@@ -3,7 +3,7 @@ BEGIN {
   $Spreadsheet::ParseXLSX::AUTHORITY = 'cpan:DOY';
 }
 {
-  $Spreadsheet::ParseXLSX::VERSION = '0.01';
+  $Spreadsheet::ParseXLSX::VERSION = '0.02';
 }
 use strict;
 use warnings;
@@ -594,7 +594,7 @@ Spreadsheet::ParseXLSX - parse XLSX files
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
