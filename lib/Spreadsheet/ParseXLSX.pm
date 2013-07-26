@@ -3,7 +3,7 @@ BEGIN {
   $Spreadsheet::ParseXLSX::AUTHORITY = 'cpan:DOY';
 }
 {
-  $Spreadsheet::ParseXLSX::VERSION = '0.02';
+  $Spreadsheet::ParseXLSX::VERSION = '0.03';
 }
 use strict;
 use warnings;
@@ -195,9 +195,13 @@ sub _parse_sheet {
     ];
 
     my ($selection) = $sheet_xml->find_nodes('//selection');
-    my $cell = $selection->att('activeCell');
-
-    $sheet->{Selection} = [ $self->_cell_to_row_col($cell) ];
+    if ($selection) {
+        my $cell = $selection->att('activeCell');
+        $sheet->{Selection} = [ $self->_cell_to_row_col($cell) ];
+    }
+    else {
+        $sheet->{Selection} = [ 0, 0 ];
+    }
 }
 
 sub _parse_shared_strings {
@@ -594,7 +598,7 @@ Spreadsheet::ParseXLSX - parse XLSX files
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 
