@@ -57,7 +57,7 @@
          "web" : "https://github.com/doy/spreadsheet-parsexlsx"
       }
    },
-   "version" : "0.04",
+   "version" : "0.05",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.018000"
