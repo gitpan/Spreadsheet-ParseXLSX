@@ -9,7 +9,13 @@ dist.ini
 lib/Spreadsheet/ParseXLSX.pm
 t/00-compile.t
 t/basic.t
+t/bug-2.t
+t/bug-3.t
+t/bug-4.t
 t/data/Test.xlsx
+t/data/bug-2.xlsx
+t/data/bug-3.xlsx
+t/data/bug-4.xlsx
 xt/release/eol.t
 xt/release/no-tabs.t
 xt/release/pod-coverage.t

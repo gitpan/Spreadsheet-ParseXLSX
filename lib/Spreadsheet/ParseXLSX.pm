@@ -3,7 +3,7 @@ BEGIN {
   $Spreadsheet::ParseXLSX::AUTHORITY = 'cpan:DOY';
 }
 {
-  $Spreadsheet::ParseXLSX::VERSION = '0.03';
+  $Spreadsheet::ParseXLSX::VERSION = '0.04';
 }
 use strict;
 use warnings;
@@ -54,9 +54,11 @@ sub _parse_workbook {
     my ($version)    = $files->{workbook}->find_nodes('//fileVersion');
     my ($properties) = $files->{workbook}->find_nodes('//workbookPr');
 
-    $workbook->{Version} = join('-',
-        map { $version->att($_) } qw(appName lowestEdited)
-    );
+    $workbook->{Version} = $version->att('appName')
+                         . ($version->att('lowestEdited')
+                             ? ('-' . $version->att('lowestEdited'))
+                             : (""));
+
     $workbook->{Flag1904} = $properties->att('date1904') ? 1 : 0;
 
     $workbook->{FmtClass} = Spreadsheet::ParseExcel::FmtDefault->new; # XXX
@@ -107,9 +109,9 @@ sub _parse_sheet {
 
     # XXX need a fallback here, the dimension tag is optional
     my ($dimension) = $sheet_xml->find_nodes('//dimension');
-    my ($topleft, $bottomright) = split ':', $dimension->att('ref');
-    my ($rmin, $cmin) = $self->_cell_to_row_col($topleft);
-    my ($rmax, $cmax) = $self->_cell_to_row_col($bottomright);
+    my ($rmin, $cmin, $rmax, $cmax) = $self->_dimensions(
+        $dimension->att('ref')
+    );
 
     $sheet->{MinRow} = $rmin;
     $sheet->{MinCol} = $cmin;
@@ -218,6 +220,8 @@ sub _parse_shared_strings {
 sub _parse_themes {
     my $self = shift;
     my ($themes) = @_;
+
+    return {} unless $themes;
 
     my @color = map {
         $_->name eq 'a:sysClr' ? $_->att('lastClr') : $_->att('val')
@@ -533,16 +537,32 @@ sub _base_path_for {
     return join('/', @path) . '/';
 }
 
+sub _dimensions {
+    my $self = shift;
+    my ($dim) = @_;
+
+    my ($topleft, $bottomright) = split ':', $dim;
+    $bottomright = $topleft unless defined $bottomright;
+
+    my ($rmin, $cmin) = $self->_cell_to_row_col($topleft);
+    my ($rmax, $cmax) = $self->_cell_to_row_col($bottomright);
+
+    return ($rmin, $cmin, $rmax, $cmax);
+}
+
 sub _cell_to_row_col {
     my $self = shift;
     my ($cell) = @_;
 
     my ($col, $row) = $cell =~ /([A-Z]+)([0-9]+)/;
-    $col =~ tr/A-Z/0-9A-P/;
-    $col = POSIX::strtol($col, 26);
-    $row = $row - 1;
 
-    return ($row, $col);
+    (my $ncol = $col) =~ tr/A-Z/1-9A-Q/;
+    $ncol = POSIX::strtol($ncol, 27);
+    $ncol -= 1;
+
+    my $nrow = $row - 1;
+
+    return ($nrow, $ncol);
 }
 
 sub _color {
@@ -598,7 +618,7 @@ Spreadsheet::ParseXLSX - parse XLSX files
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
