@@ -3,7 +3,7 @@ BEGIN {
   $Spreadsheet::ParseXLSX::AUTHORITY = 'cpan:DOY';
 }
 {
-  $Spreadsheet::ParseXLSX::VERSION = '0.05';
+  $Spreadsheet::ParseXLSX::VERSION = '0.06';
 }
 use strict;
 use warnings;
@@ -556,9 +556,12 @@ sub _cell_to_row_col {
 
     my ($col, $row) = $cell =~ /([A-Z]+)([0-9]+)/;
 
-    (my $ncol = $col) =~ tr/A-Z/1-9A-Q/;
-    $ncol = POSIX::strtol($ncol, 27);
-    $ncol -= 1;
+    my $ncol = 0;
+    for my $char (split //, $col) {
+        $ncol *= 26;
+        $ncol += ord($char) - ord('A') + 1;
+    }
+    $ncol = $ncol - 1;
 
     my $nrow = $row - 1;
 
@@ -618,7 +621,7 @@ Spreadsheet::ParseXLSX - parse XLSX files
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 
