@@ -31,7 +31,7 @@
             "Archive::Zip" : "0",
             "Graphics::ColorUtils" : "0",
             "Scalar::Util" : "0",
-            "Spreadsheet::ParseExcel" : "0",
+            "Spreadsheet::ParseExcel" : "0.55",
             "XML::Twig" : "0",
             "strict" : "0",
             "warnings" : "0"
@@ -43,6 +43,12 @@
             "File::Temp" : "0",
             "Test::More" : "0.88"
          }
+      }
+   },
+   "provides" : {
+      "Spreadsheet::ParseXLSX" : {
+         "file" : "lib/Spreadsheet/ParseXLSX.pm",
+         "version" : "0.07"
       }
    },
    "release_status" : "stable",
@@ -57,7 +63,7 @@
          "web" : "https://github.com/doy/spreadsheet-parsexlsx"
       }
    },
-   "version" : "0.06",
+   "version" : "0.07",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.018001"
@@ -223,6 +229,16 @@
             "class" : "Dist::Zilla::Plugin::Git::NextVersion",
             "name" : "@DOY/Git::NextVersion",
             "version" : "2.013"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::ContributorsFromGit",
+            "name" : "@DOY/ContributorsFromGit",
+            "version" : "0.006"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::MetaProvides::Package",
+            "name" : "@DOY/MetaProvides::Package",
+            "version" : "1.14000002"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodWeaver",

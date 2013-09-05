@@ -3,7 +3,7 @@ BEGIN {
   $Spreadsheet::ParseXLSX::AUTHORITY = 'cpan:DOY';
 }
 {
-  $Spreadsheet::ParseXLSX::VERSION = '0.06';
+  $Spreadsheet::ParseXLSX::VERSION = '0.07';
 }
 use strict;
 use warnings;
@@ -12,7 +12,7 @@ use warnings;
 use Archive::Zip;
 use Graphics::ColorUtils 'rgb2hls', 'hls2rgb';
 use Scalar::Util 'openhandle';
-use Spreadsheet::ParseExcel;
+use Spreadsheet::ParseExcel 0.55;
 use XML::Twig;
 
 
@@ -140,6 +140,13 @@ sub _parse_sheet {
         }
         elsif ($type eq 'd') {
             $long_type = 'Date';
+        }
+        elsif ($type eq 'b') {
+            $long_type = 'Text';
+            $val = $val ? "TRUE" : "FALSE";
+        }
+        elsif ($type eq 'str') {
+            $long_type = 'Text';
         }
         else {
             die "unimplemented type $type"; # XXX
@@ -621,7 +628,7 @@ Spreadsheet::ParseXLSX - parse XLSX files
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 

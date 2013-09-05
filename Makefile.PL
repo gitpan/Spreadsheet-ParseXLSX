@@ -23,7 +23,7 @@ my %WriteMakefileArgs = (
     "Archive::Zip" => 0,
     "Graphics::ColorUtils" => 0,
     "Scalar::Util" => 0,
-    "Spreadsheet::ParseExcel" => 0,
+    "Spreadsheet::ParseExcel" => "0.55",
     "XML::Twig" => 0,
     "strict" => 0,
     "warnings" => 0
@@ -33,7 +33,7 @@ my %WriteMakefileArgs = (
     "File::Temp" => 0,
     "Test::More" => "0.88"
   },
-  "VERSION" => "0.06",
+  "VERSION" => "0.07",
   "test" => {
     "TESTS" => "t/*.t"
   }
