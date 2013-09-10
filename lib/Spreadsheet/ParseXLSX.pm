@@ -3,7 +3,7 @@ BEGIN {
   $Spreadsheet::ParseXLSX::AUTHORITY = 'cpan:DOY';
 }
 {
-  $Spreadsheet::ParseXLSX::VERSION = '0.07';
+  $Spreadsheet::ParseXLSX::VERSION = '0.08';
 }
 use strict;
 use warnings;
@@ -219,8 +219,11 @@ sub _parse_shared_strings {
 
     return [
         map {
-            { Text => $_->text } # XXX are Unicode, Rich, or Ext important?
-        } $strings->find_nodes('//t')
+            my $node = $_;
+            # XXX this discards information about formatting within cells
+            # not sure how to represent that
+            { Text => join('', map { $_->text } $node->find_nodes('t')) }
+        } $strings->find_nodes('//si')
     ];
 }
 
@@ -516,7 +519,7 @@ sub _parse_xml {
     die "no subfile named $subfile" unless $member;
 
     my $xml = XML::Twig->new;
-    $xml->parse($member->contents);
+    $xml->parse(scalar $member->contents);
 
     return $xml;
 }
@@ -628,7 +631,7 @@ Spreadsheet::ParseXLSX - parse XLSX files
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 

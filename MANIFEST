@@ -13,6 +13,7 @@ t/bug-2.t
 t/bug-3.t
 t/bug-4.t
 t/bug-5.t
+t/bug-6-2.t
 t/bug-6.t
 t/cell-to-row-col.t
 t/data/Test.xlsx
@@ -20,6 +21,7 @@ t/data/bug-2.xlsx
 t/data/bug-3.xlsx
 t/data/bug-4.xlsx
 t/data/bug-5.xlsx
+t/data/bug-6-2.xlsx
 t/data/bug-6.xlsx
 xt/release/eol.t
 xt/release/no-tabs.t
