@@ -48,7 +48,7 @@
    "provides" : {
       "Spreadsheet::ParseXLSX" : {
          "file" : "lib/Spreadsheet/ParseXLSX.pm",
-         "version" : "0.08"
+         "version" : "0.09"
       }
    },
    "release_status" : "stable",
@@ -63,7 +63,7 @@
          "web" : "https://github.com/doy/spreadsheet-parsexlsx"
       }
    },
-   "version" : "0.08",
+   "version" : "0.09",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.018001"

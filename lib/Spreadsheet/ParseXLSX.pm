@@ -3,7 +3,7 @@ BEGIN {
   $Spreadsheet::ParseXLSX::AUTHORITY = 'cpan:DOY';
 }
 {
-  $Spreadsheet::ParseXLSX::VERSION = '0.08';
+  $Spreadsheet::ParseXLSX::VERSION = '0.09';
 }
 use strict;
 use warnings;
@@ -107,18 +107,48 @@ sub _parse_sheet {
     my $self = shift;
     my ($sheet, $sheet_xml) = @_;
 
-    # XXX need a fallback here, the dimension tag is optional
-    my ($dimension) = $sheet_xml->find_nodes('//dimension');
-    my ($rmin, $cmin, $rmax, $cmax) = $self->_dimensions(
-        $dimension->att('ref')
-    );
+    my @cells = $sheet_xml->find_nodes('//sheetData/row/c');
 
-    $sheet->{MinRow} = $rmin;
-    $sheet->{MinCol} = $cmin;
-    $sheet->{MaxRow} = $rmax;
-    $sheet->{MaxCol} = $cmax;
+    if (@cells) {
+        # XXX need a fallback here, the dimension tag is optional
+        my ($dimension) = $sheet_xml->find_nodes('//dimension');
+        my ($rmin, $cmin, $rmax, $cmax) = $self->_dimensions(
+            $dimension->att('ref')
+        );
 
-    for my $cell ($sheet_xml->find_nodes('//sheetData/row/c')) {
+        $sheet->{MinRow} = $rmin;
+        $sheet->{MinCol} = $cmin;
+        $sheet->{MaxRow} = $rmax;
+        $sheet->{MaxCol} = $cmax;
+    }
+    else {
+        $sheet->{MinRow} = 0;
+        $sheet->{MinCol} = 0;
+        $sheet->{MaxRow} = -1;
+        $sheet->{MaxCol} = -1;
+    }
+
+    my @merged_cells;
+    for my $merge_area ($sheet_xml->find_nodes('//mergeCells/mergeCell')) {
+        if (my $ref = $merge_area->att('ref')) {
+            my ($topleft, $bottomright) = $ref =~ /([^:]+):([^:]+)/;
+
+            my ($toprow, $leftcol)     = $self->_cell_to_row_col($topleft);
+            my ($bottomrow, $rightcol) = $self->_cell_to_row_col($bottomright);
+
+            push @{ $sheet->{MergedArea} }, [
+                $toprow, $leftcol,
+                $bottomrow, $rightcol,
+            ];
+            for my $row ($toprow .. $bottomrow) {
+                for my $col ($leftcol .. $rightcol) {
+                    push(@merged_cells, [$row, $col]);
+                }
+            }
+        }
+    }
+
+    for my $cell (@cells) {
         my ($row, $col) = $self->_cell_to_row_col($cell->att('r'));
         my $val = $cell->first_child('v')
             ? $cell->first_child('v')->text
@@ -145,6 +175,9 @@ sub _parse_sheet {
             $long_type = 'Text';
             $val = $val ? "TRUE" : "FALSE";
         }
+        elsif ($type eq 'e') {
+            $long_type = 'Text';
+        }
         elsif ($type eq 'str') {
             $long_type = 'Text';
         }
@@ -154,6 +187,9 @@ sub _parse_sheet {
 
         my $format_idx = $cell->att('s') || 0;
         my $format = $sheet->{_Book}{Format}[$format_idx];
+        $format->{Merged} = !!grep {
+            $row == $_->[0] && $col == $_->[1]
+        } @merged_cells;
 
         # see the list of built-in formats below in _parse_styles
         # XXX probably should figure this out from the actual format string,
@@ -165,6 +201,7 @@ sub _parse_sheet {
         my $cell = Spreadsheet::ParseExcel::Cell->new(
             Val      => $val,
             Type     => $long_type,
+            Merged   => $format->{Merged},
             Format   => $format,
             FormatNo => $format_idx,
             ($cell->first_child('f')
@@ -205,8 +242,16 @@ sub _parse_sheet {
 
     my ($selection) = $sheet_xml->find_nodes('//selection');
     if ($selection) {
-        my $cell = $selection->att('activeCell');
-        $sheet->{Selection} = [ $self->_cell_to_row_col($cell) ];
+        if (my $cell = $selection->att('activeCell')) {
+            $sheet->{Selection} = [ $self->_cell_to_row_col($cell) ];
+        }
+        elsif (my $range = $selection->att('sqref')) {
+            my ($topleft, $bottomright) = $range =~ /([^:]+):([^:]+)/;
+            $sheet->{Selection} = [
+                $self->_cell_to_row_col($topleft),
+                $self->_cell_to_row_col($bottomright),
+            ];
+        }
     }
     else {
         $sheet->{Selection} = [ 0, 0 ];
@@ -222,7 +267,7 @@ sub _parse_shared_strings {
             my $node = $_;
             # XXX this discards information about formatting within cells
             # not sure how to represent that
-            { Text => join('', map { $_->text } $node->find_nodes('t')) }
+            { Text => join('', map { $_->text } $node->find_nodes('.//t')) }
         } $strings->find_nodes('//si')
     ];
 }
@@ -631,7 +676,7 @@ Spreadsheet::ParseXLSX - parse XLSX files
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

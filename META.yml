@@ -18,7 +18,7 @@ name: Spreadsheet-ParseXLSX
 provides:
   Spreadsheet::ParseXLSX:
     file: lib/Spreadsheet/ParseXLSX.pm
-    version: 0.08
+    version: 0.09
 requires:
   Archive::Zip: 0
   Graphics::ColorUtils: 0
@@ -31,7 +31,7 @@ resources:
   bugtracker: https://github.com/doy/spreadsheet-parsexlsx/issues
   homepage: http://metacpan.org/release/Spreadsheet-ParseXLSX
   repository: git://github.com/doy/spreadsheet-parsexlsx.git
-version: 0.08
+version: 0.09
 x_Dist_Zilla:
   perl:
     version: 5.018001
