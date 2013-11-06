@@ -11,6 +11,7 @@ t/00-compile.t
 t/basic.t
 t/bug-10.t
 t/bug-11.t
+t/bug-12.t
 t/bug-2.t
 t/bug-3.t
 t/bug-4.t
@@ -23,6 +24,7 @@ t/cell-to-row-col.t
 t/data/Test.xlsx
 t/data/bug-10.xlsx
 t/data/bug-11.xlsx
+t/data/bug-12.xlsx
 t/data/bug-2.xlsx
 t/data/bug-3.xlsx
 t/data/bug-4.xlsx
