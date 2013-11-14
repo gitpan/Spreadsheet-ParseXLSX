@@ -3,7 +3,7 @@ BEGIN {
   $Spreadsheet::ParseXLSX::AUTHORITY = 'cpan:DOY';
 }
 {
-  $Spreadsheet::ParseXLSX::VERSION = '0.10';
+  $Spreadsheet::ParseXLSX::VERSION = '0.11';
 }
 use strict;
 use warnings;
@@ -27,29 +27,30 @@ sub parse {
     my ($file) = @_;
 
     my $zip = Archive::Zip->new;
+    my $workbook = Spreadsheet::ParseExcel::Workbook->new;
     if (openhandle($file)) {
         bless $file, 'IO::File' if ref($file) eq 'GLOB'; # sigh
         $zip->readFromFileHandle($file) == Archive::Zip::AZ_OK
             or die "Can't open filehandle as a zip file";
+        $workbook->{File} = undef;
     }
     elsif (!ref($file)) {
         $zip->read($file) == Archive::Zip::AZ_OK
             or die "Can't open file '$file' as a zip file";
+        $workbook->{File} = $file;
     }
     else {
         die "Argument to 'new' must be a filename or open filehandle";
     }
 
-    return $self->_parse_workbook($zip);
+    return $self->_parse_workbook($zip, $workbook);
 }
 
 sub _parse_workbook {
     my $self = shift;
-    my ($zip) = @_;
+    my ($zip, $workbook) = @_;
 
     my $files = $self->_extract_files($zip);
-
-    my $workbook = Spreadsheet::ParseExcel::Workbook->new;
 
     my ($version)    = $files->{workbook}->find_nodes('//fileVersion');
     my ($properties) = $files->{workbook}->find_nodes('//workbookPr');
@@ -677,7 +678,7 @@ Spreadsheet::ParseXLSX - parse XLSX files
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 

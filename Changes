@@ -1,5 +1,8 @@
 Revision history for Spreadsheet-ParseXLSX
 
+0.11  2013-11-13
+      - fix $workbook->get_filename (masonik, #13)
+
 0.10  2013-11-06
       - support inlineStr cells (David Gang, #12)
 
