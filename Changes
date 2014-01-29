@@ -1,5 +1,10 @@
 Revision history for Spreadsheet-ParseXLSX
 
+0.13  2014-01-29
+      - support locked and hidden cells (Tux, #15)
+      - "default color" is now returned as undef, rather than assuming it's
+        always black (Tux, #15)
+
 0.12  2013-12-09
       - support underline and strikethrough font properties (matrot, #14)
 

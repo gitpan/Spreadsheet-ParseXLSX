@@ -10,7 +10,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.008, CPAN::Meta::Converter version 2.132830'
 license: mit
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -19,7 +19,7 @@ name: Spreadsheet-ParseXLSX
 provides:
   Spreadsheet::ParseXLSX:
     file: lib/Spreadsheet/ParseXLSX.pm
-    version: 0.12
+    version: 0.13
 requires:
   Archive::Zip: 0
   Graphics::ColorUtils: 0
@@ -32,7 +32,7 @@ resources:
   bugtracker: https://github.com/doy/spreadsheet-parsexlsx/issues
   homepage: http://metacpan.org/release/Spreadsheet-ParseXLSX
   repository: git://github.com/doy/spreadsheet-parsexlsx.git
-version: 0.12
+version: 0.13
 x_Dist_Zilla:
   perl:
     version: 5.018001
@@ -44,31 +44,31 @@ x_Dist_Zilla:
           phase: test
           type: requires
       name: '@DOY/TestMoreDoneTesting'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::GatherDir
       name: '@DOY/GatherDir'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::PruneCruft
       name: '@DOY/PruneCruft'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::ManifestSkip
       name: '@DOY/ManifestSkip'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::MetaYAML
       name: '@DOY/MetaYAML'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::License
       name: '@DOY/License'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::Readme
       name: '@DOY/Readme'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::RunExtraTests
       name: '@DOY/RunExtraTests'
@@ -76,39 +76,39 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@DOY/ExecDir'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::ShareDir
       name: '@DOY/ShareDir'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::MakeMaker
       name: '@DOY/MakeMaker'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::Manifest
       name: '@DOY/Manifest'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::TestRelease
       name: '@DOY/TestRelease'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::ConfirmRelease
       name: '@DOY/ConfirmRelease'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::MetaConfig
       name: '@DOY/MetaConfig'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::MetaJSON
       name: '@DOY/MetaJSON'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::NextRelease
       name: '@DOY/NextRelease'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::CheckChangesHasContent
       name: '@DOY/CheckChangesHasContent'
@@ -116,7 +116,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PkgVersion
       name: '@DOY/PkgVersion'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::Authority
       name: '@DOY/Authority'
@@ -124,11 +124,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@DOY/PodCoverageTests'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::PodSyntaxTests
       name: '@DOY/PodSyntaxTests'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::NoTabsTests
       config:
@@ -161,7 +161,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::MetaResources
       name: '@DOY/MetaResources'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::Git::Check
       name: '@DOY/Git::Check'
@@ -185,7 +185,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: '@DOY/MetaProvides::Package/AUTOVIV/:InstallModulesPM'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::MetaProvides::Package
       config:
@@ -203,42 +203,50 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::UploadToCPAN
       name: '@DOY/UploadToCPAN'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::AutoPrereqs
       name: AutoPrereqs
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::Encoding
       name: Encoding
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':IncModules'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':TestFiles'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':ExecFiles'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':ShareFiles'
-      version: 5.006
+      version: 5.008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':MainModule'
-      version: 5.006
+      version: 5.008
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':AllFiles'
+      version: 5.008
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':NoFiles'
+      version: 5.008
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
       is_trial: 0
-    version: 5.006
+    version: 5.008
 x_authority: cpan:DOY
