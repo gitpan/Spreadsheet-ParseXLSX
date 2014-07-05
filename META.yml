@@ -20,7 +20,7 @@ name: Spreadsheet-ParseXLSX
 provides:
   Spreadsheet::ParseXLSX:
     file: lib/Spreadsheet/ParseXLSX.pm
-    version: '0.14'
+    version: '0.15'
 requires:
   Archive::Zip: '0'
   Graphics::ColorUtils: '0'
@@ -33,11 +33,15 @@ resources:
   bugtracker: https://github.com/doy/spreadsheet-parsexlsx/issues
   homepage: http://metacpan.org/release/Spreadsheet-ParseXLSX
   repository: git://github.com/doy/spreadsheet-parsexlsx.git
-version: '0.14'
+version: '0.15'
 x_Dist_Zilla:
   perl:
     version: '5.018002'
   plugins:
+    -
+      class: Dist::Zilla::Plugin::FileFinder::Filter
+      name: NonBinaryScriptFiles
+      version: '5.014'
     -
       class: Dist::Zilla::Plugin::Prereqs
       config:
@@ -137,15 +141,15 @@ x_Dist_Zilla:
       name: '@DOY/PodSyntaxTests'
       version: '5.014'
     -
-      class: Dist::Zilla::Plugin::NoTabsTests
+      class: Dist::Zilla::Plugin::Test::NoTabs
       config:
         Dist::Zilla::Plugin::Test::NoTabs:
           module_finder:
             - ':InstallModules'
           script_finder:
-            - ':ExecFiles'
-      name: '@DOY/NoTabsTests'
-      version: '0.06'
+            - NonBinaryScriptFiles
+      name: '@DOY/Test::NoTabs'
+      version: '0.07'
     -
       class: Dist::Zilla::Plugin::EOLTests
       name: '@DOY/EOLTests'
@@ -332,3 +336,5 @@ x_Dist_Zilla:
       is_trial: '0'
     version: '5.014'
 x_authority: cpan:DOY
+x_contributors:
+  - 'Meredith Howard <mhoward@roomag.org>'
