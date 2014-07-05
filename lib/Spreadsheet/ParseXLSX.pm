@@ -2,7 +2,7 @@ package Spreadsheet::ParseXLSX;
 BEGIN {
   $Spreadsheet::ParseXLSX::AUTHORITY = 'cpan:DOY';
 }
-$Spreadsheet::ParseXLSX::VERSION = '0.15';
+$Spreadsheet::ParseXLSX::VERSION = '0.16';
 use strict;
 use warnings;
 # ABSTRACT: parse XLSX files
@@ -22,7 +22,7 @@ sub new {
 
 sub parse {
     my $self = shift;
-    my ($file) = @_;
+    my ($file, $formatter) = @_;
 
     my $zip = Archive::Zip->new;
     my $workbook = Spreadsheet::ParseExcel::Workbook->new;
@@ -41,26 +41,28 @@ sub parse {
         die "Argument to 'new' must be a filename or open filehandle";
     }
 
-    return $self->_parse_workbook($zip, $workbook);
+    return $self->_parse_workbook($zip, $workbook, $formatter);
 }
 
 sub _parse_workbook {
     my $self = shift;
-    my ($zip, $workbook) = @_;
+    my ($zip, $workbook, $formatter) = @_;
 
     my $files = $self->_extract_files($zip);
 
     my ($version)    = $files->{workbook}->find_nodes('//fileVersion');
     my ($properties) = $files->{workbook}->find_nodes('//workbookPr');
 
-    $workbook->{Version} = $version->att('appName')
-                         . ($version->att('lowestEdited')
-                             ? ('-' . $version->att('lowestEdited'))
-                             : (""));
+    if ($version) {
+        $workbook->{Version} = $version->att('appName')
+                             . ($version->att('lowestEdited')
+                                 ? ('-' . $version->att('lowestEdited'))
+                                 : (""));
+    }
 
-    $workbook->{Flag1904} = $properties->att('date1904') ? 1 : 0;
+    $workbook->{Flag1904} = $properties && $properties->att('date1904') ? 1 : 0;
 
-    $workbook->{FmtClass} = Spreadsheet::ParseExcel::FmtDefault->new; # XXX
+    $workbook->{FmtClass} = $formatter || Spreadsheet::ParseExcel::FmtDefault->new;
 
     my $themes = $self->_parse_themes((values %{ $files->{themes} })[0]); # XXX
 
@@ -115,6 +117,7 @@ sub _parse_sheet {
 
     my @merged_cells;
 
+    my @column_formats;
     my @column_widths;
     my @row_heights;
 
@@ -174,8 +177,10 @@ sub _parse_sheet {
             'col' => sub {
                 my ( $twig, $col ) = @_;
 
-                $column_widths[ $_ - 1 ] = $col->att('width')
-                    for ( $col->att('min') .. $col->att('max') );
+                for my $colnum ($col->att('min')..$col->att('max')) {
+                    $column_widths[$colnum - 1] = $col->att('width');
+                    $column_formats[$colnum - 1] = $col->att('style');
+                }
 
                 $twig->purge;
             },
@@ -201,6 +206,14 @@ sub _parse_sheet {
                         $self->_cell_to_row_col($bottomright),
                     ];
                 }
+
+                $twig->purge;
+            },
+
+            'sheetPr/tabColor' => sub {
+                my ( $twig, $tab_color ) = @_;
+
+                $sheet->{TabColor} = $self->_color($sheet->{_Book}{Color}, $tab_color);
 
                 $twig->purge;
             },
@@ -305,6 +318,7 @@ sub _parse_sheet {
     $sheet->{ColWidth} = [
         map { defined $_ ? 0+$_ : 0+$default_column_width } @column_widths
     ];
+    $sheet->{ColFmtNo} = \@column_formats;
 
 }
 
@@ -552,9 +566,9 @@ sub _parse_styles {
             Font   => $font[$_->att('fontId')],
             FmtIdx => 0+$_->att('numFmtId'),
 
-            Lock => $protection
+            Lock => $protection && defined $protection->att('locked')
                 ? $protection->att('locked')
-                : 0,
+                : 1,
             Hidden => $protection
                 ? $protection->att('hidden')
                 : 0,
@@ -775,7 +789,7 @@ Spreadsheet::ParseXLSX - parse XLSX files
 
 =head1 VERSION
 
-version 0.15
+version 0.16
 
 =head1 SYNOPSIS
 
@@ -795,11 +809,12 @@ This module is an adaptor for L<Spreadsheet::ParseExcel> that reads XLSX files.
 
 Returns a new parser instance. Takes no parameters.
 
-=head2 parse($file)
+=head2 parse($file, $formatter)
 
 Parses an XLSX file. Parsing errors throw an exception. C<$file> can be either
 a filename or an open filehandle. Returns a
 L<Spreadsheet::ParseExcel::Workbook> instance containing the parsed data.
+The C<$formatter> argument is an optional formatter class as described in L<Spreadsheet::ParseExcel>.
 
 =head1 INCOMPATIBILITIES
 

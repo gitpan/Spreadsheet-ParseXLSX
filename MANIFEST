@@ -24,7 +24,9 @@ t/bug-6-2.t
 t/bug-6.t
 t/bug-7.t
 t/bug-8.t
+t/bug-lock.t
 t/cell-to-row-col.t
+t/column-formats.t
 t/data/Test.xlsx
 t/data/bug-10.xlsx
 t/data/bug-11.xlsx
@@ -40,6 +42,10 @@ t/data/bug-6-2.xlsx
 t/data/bug-6.xlsx
 t/data/bug-7.xlsx
 t/data/bug-8.xlsx
+t/data/bug-lock.xlsx
+t/data/column-formats.xlsx
+t/data/tab-color.xlsx
+t/tab-color.t
 xt/release/eol.t
 xt/release/no-tabs.t
 xt/release/pod-coverage.t

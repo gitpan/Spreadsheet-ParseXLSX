@@ -52,7 +52,7 @@
    "provides" : {
       "Spreadsheet::ParseXLSX" : {
          "file" : "lib/Spreadsheet/ParseXLSX.pm",
-         "version" : "0.15"
+         "version" : "0.16"
       }
    },
    "release_status" : "stable",
@@ -67,7 +67,7 @@
          "web" : "https://github.com/doy/spreadsheet-parsexlsx"
       }
    },
-   "version" : "0.15",
+   "version" : "0.16",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.018002"
@@ -462,6 +462,8 @@
    },
    "x_authority" : "cpan:DOY",
    "x_contributors" : [
+      "FL <f20@reckon.co.uk>",
+      "Fitz Elliott <felliott@fiskur.org>",
       "Meredith Howard <mhoward@roomag.org>"
    ]
 }

@@ -1,5 +1,11 @@
 Revision history for Spreadsheet-ParseXLSX
 
+0.16  2014-07-05
+      - Cells should default to locked (f20, #25)
+      - Support ColFmtNo and TabColor (Fitz Elliott, #26)
+      - try to avoid dying on certain oddly generated spreadsheets with missing
+        data (#23)
+
 0.15  2014-07-04
       - Parse shared strings and worksheets as they are read rather than
         reading everything into memory, to reduce memory usage

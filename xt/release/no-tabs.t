@@ -24,7 +24,10 @@ my @files = (
     't/bug-6.t',
     't/bug-7.t',
     't/bug-8.t',
-    't/cell-to-row-col.t'
+    't/bug-lock.t',
+    't/cell-to-row-col.t',
+    't/column-formats.t',
+    't/tab-color.t'
 );
 
 notabs_ok($_) foreach @files;
